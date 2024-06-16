@@ -1,13 +1,12 @@
 require("dotenv").config();
 const express = require("express");
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const cors = require("cors");
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// Configurar la conexión a la base de datos
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: process.env.DB_HOST,
@@ -17,7 +16,6 @@ const pool = mysql.createPool({
   port: process.env.DB_PORT,
 });
 
-// Rutas para obtener datos
 app.get("/cities", (req, res) => {
   pool.query("SELECT * FROM cities", (error, results) => {
     if (error) {
