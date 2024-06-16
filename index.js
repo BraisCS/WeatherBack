@@ -16,13 +16,14 @@ const pool = mysql.createPool({
   port: process.env.DB_PORT,
 });
 
-app.get("/cities", (req, res) => {
+app.get("/", (req, res) => {
   pool.query("SELECT * FROM cities", (error, results) => {
     if (error) {
       console.error(error);
       res.status(500).json({ error: "Database error" });
     } else {
       res.json(results);
+      console.log(results);
     }
   });
 });
