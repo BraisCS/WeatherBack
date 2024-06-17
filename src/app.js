@@ -1,8 +1,10 @@
 import express from "express";
 import { pool } from "./db.js";
 import { PORT } from "./config.js";
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 
 app.get("/", async (req, res) => {
   const cities = await pool.query("SELECT * FROM railway.cities;");
