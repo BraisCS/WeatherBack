@@ -1,7 +1,7 @@
 import express from "express";
+import cors from "cors"; // Use import instead of require
 import { pool } from "./db.js";
 import { PORT } from "./config.js";
-const cors = require("cors");
 
 const app = express();
 app.use(cors());
@@ -23,5 +23,6 @@ app.get("/create", async (req, res) => {
   res.json(result);
 });
 
-app.listen(PORT);
-console.log("Server running on port", PORT);
+app.listen(PORT, () => {
+  console.log("Server running on port", PORT);
+});
