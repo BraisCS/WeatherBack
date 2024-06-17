@@ -5,8 +5,8 @@ import { PORT } from "./config.js";
 const app = express();
 
 app.get("/", async (req, res) => {
-  const [rows] = await pool.query("SELECT * FROM railway.cities;");
-  res.json(rows);
+  const cities = await pool.query("SELECT * FROM railway.cities;");
+  res.json(cities);
 });
 
 app.get("/ping", async (req, res) => {
