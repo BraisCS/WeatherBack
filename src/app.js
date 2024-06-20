@@ -11,6 +11,11 @@ app.get("/", async (req, res) => {
   res.json(cities);
 });
 
+app.get("/cities", async (req, res) => {
+  const [cities] = await pool.query("SELECT * FROM railway.cities;");
+  res.json(cities);
+});
+
 app.get("/ping", async (req, res) => {
   const [result] = await pool.query('SELECT "HELLOR WORLD" as RESULT');
   res.json(result[0]);
