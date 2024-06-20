@@ -28,6 +28,27 @@ app.get("/create", async (req, res) => {
   res.json(result);
 });
 
+app.get("/weather/:city", async (req, res) => {
+  const city = req.params.city;
+  try {
+    const response = await axios.get(
+      `http://api.openweathermap.org/data/2.5/weather`,
+      {
+        params: {
+          q: `${city},es`,
+          appid: API_KEY,
+          units: "metric",
+          lang: "es",
+        },
+      }
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener datos meteorológicos" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
