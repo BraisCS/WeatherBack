@@ -17,20 +17,6 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.delete("/delete/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const [result] = await pool.query(
-      "DELETE FROM railway.cities WHERE id = ?",
-      [id]
-    );
-    res.json({ message: `Ciudad con id ${id} eliminada` });
-  } catch (error) {
-    console.error("Error deleting city:", error);
-    res.status(500).json({ error: "Error al eliminar la ciudad" });
-  }
-});
-
 app.get("/weather/:city", async (req, res) => {
   const city = req.params.city;
   try {
@@ -49,6 +35,28 @@ app.get("/weather/:city", async (req, res) => {
   } catch (error) {
     console.error("Error fetching weather data:", error);
     res.status(500).json({ error: "Error al obtener datos meteorológicos" });
+  }
+});
+
+app.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await pool.query("DELETE FROM railway.cities WHERE id = ?", [id]);
+    res.json({ message: `Ciudad con id ${id} eliminada` });
+  } catch (error) {
+    console.error("Error deleting city:", error);
+    res.status(500).json({ error: "Error al eliminar la ciudad" });
+  }
+});
+
+// Asegúrate de que esta ruta esté presente
+app.get("/cities", async (req, res) => {
+  try {
+    const [cities] = await pool.query("SELECT * FROM railway.cities;");
+    res.json(cities);
+  } catch (error) {
+    console.error("Error fetching cities:", error);
+    res.status(500).json({ error: "Error al obtener las ciudades" });
   }
 });
 
