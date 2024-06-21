@@ -1,5 +1,5 @@
 import express from "express";
-import cors from "cors"; // Use import instead of require
+import cors from "cors";
 import { pool } from "./db.js";
 import { API_KEY, PORT } from "./config.js";
 import axios from "axios";
@@ -8,8 +8,13 @@ const app = express();
 app.use(cors());
 
 app.get("/", async (req, res) => {
-  const cities = await pool.query("SELECT * FROM railway.cities;");
-  res.json(cities);
+  try {
+    const [cities] = await pool.query("SELECT * FROM railway.cities;");
+    res.json(cities);
+  } catch (error) {
+    console.error("Error fetching cities:", error);
+    res.status(500).json({ error: "Error al obtener las ciudades" });
+  }
 });
 
 app.get("/weather/:city", async (req, res) => {
@@ -28,7 +33,7 @@ app.get("/weather/:city", async (req, res) => {
     );
     res.json(response.data);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching weather data:", error);
     res.status(500).json({ error: "Error al obtener datos meteorológicos" });
   }
 });
