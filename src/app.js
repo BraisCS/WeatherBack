@@ -38,6 +38,20 @@ app.get("/weather/:city", async (req, res) => {
   }
 });
 
+app.post("/create", async (req, res) => {
+  const { name } = req.body;
+  try {
+    const result = await pool.query(
+      "INSERT INTO railway.cities (name) VALUES (?)",
+      [name]
+    );
+    res.json({ message: `Ciudad ${name} creada`, id: result.insertId });
+  } catch (error) {
+    console.error("Error creating city:", error);
+    res.status(500).json({ error: "Error al crear la ciudad" });
+  }
+});
+
 app.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
   try {
