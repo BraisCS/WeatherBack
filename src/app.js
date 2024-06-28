@@ -5,7 +5,10 @@ import { API_KEY, PORT } from "./config.js";
 import axios from "axios";
 
 const app = express();
-app.use(cors("*")); // Permitir solicitudes desde http://localhost:4200
+
+app.use(express.json());
+
+app.use(cors());
 
 app.get("/", async (req, res) => {
   try {
